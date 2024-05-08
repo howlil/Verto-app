@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Token {
+  id         String    @id
+  token      String
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+  userId     String
+  User       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Alternatif {
+  id          String       @id
+  nama        String
+  deskripsi   String?
+  createdAt   DateTime     @default(now())
+  Penilaians  Penilaian[]
+}
+
+model DetailKriteria {
+  id                String      @id
+  id_kriteria       String
+  deskripsi         String
+  nilai             Float
+  createdAt         DateTime    @default(now())
+  Kriteria          Kriteria    @relation(fields: [id_kriteria], references: [id])
+  Penilaians        Penilaian[]
+}
+
+model Hasil {
+  id             String    @id
+  id_penilaian   String
+  ranking        Int
+  nilai          Float
+  userId         String
+  Penilaian      Penilaian @relation(fields: [id_penilaian], references: [id])
+  User           User      @relation(fields: [userId], references: [id])
+}
+
+model Kriteria {
+  id              String            @id
+  nama            String
+  bobot           Float
+  DetailKriterias DetailKriteria[]
+}
+
+model Penilaian {
+  id                  String           @id
+  id_detail_kriteria  String
+  id_alternatif       String
+  Hasils              Hasil[]
+  Alternatif          Alternatif      @relation(fields: [id_alternatif], references: [id])
+  DetailKriteria      DetailKriteria  @relation(fields: [id_detail_kriteria], references: [id])
+}
+
+model User {
+  id        String    @id
+  name      String?
+  password  String
+  email     String   @unique
+  image     String?
+  createdAt DateTime  @default(now())
+  Token     Token[]
+  Hasils    Hasil[]
+}
