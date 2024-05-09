@@ -1,6 +1,6 @@
-const admin = require('./admin')
-const server = {};
+const user = require('./userRoute');
+const server ={}
 
-server.admin = admin;
+server.user = user
 
-module.exports = server;
+module.exports = server

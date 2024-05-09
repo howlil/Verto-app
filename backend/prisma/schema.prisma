@@ -1,15 +1,17 @@
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
+
 model Token {
-  id         String    @id
-  token      String
+  id                String  @id @default(cuid())
+  token      String    @unique
   createdAt  DateTime  @default(now())
   expiresAt  DateTime
   userId     String
@@ -17,7 +19,7 @@ model Token {
 }
 
 model Alternatif {
-  id          String       @id
+  id                String  @id @default(cuid())
   nama        String
   deskripsi   String?
   createdAt   DateTime     @default(now())
@@ -25,7 +27,7 @@ model Alternatif {
 }
 
 model DetailKriteria {
-  id                String      @id
+  id                String  @id @default(cuid())
   id_kriteria       String
   deskripsi         String
   nilai             Float
@@ -35,7 +37,7 @@ model DetailKriteria {
 }
 
 model Hasil {
-  id             String    @id
+  id                String  @id @default(cuid())
   id_penilaian   String
   ranking        Int
   nilai          Float
@@ -45,14 +47,14 @@ model Hasil {
 }
 
 model Kriteria {
-  id              String            @id
+  id                String  @id @default(cuid())
   nama            String
   bobot           Float
   DetailKriterias DetailKriteria[]
 }
 
 model Penilaian {
-  id                  String           @id
+  id                String  @id @default(cuid())
   id_detail_kriteria  String
   id_alternatif       String
   Hasils              Hasil[]
@@ -61,7 +63,7 @@ model Penilaian {
 }
 
 model User {
-  id        String    @id
+  id                String  @id @default(cuid())
   name      String?
   password  String
   email     String   @unique
