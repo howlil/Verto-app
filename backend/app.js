@@ -16,6 +16,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 app.use("/", server.user)
+app.use("/", server.kriteria)
 
 
 app.use((err, req, res, next) => {

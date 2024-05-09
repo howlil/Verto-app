@@ -2,20 +2,40 @@ const jwt = require('jsonwebtoken');
 const prisma = require('../config/prisma');
 
 const authenticateToken = async (req, res, next) => {
+  try{
+
+  
     const authHeader = req.headers['authorization'];
+    if (!authHeader) {
+      res.status(404).json({
+          success: false,
+          message: 'Masukkan token terlebih dahulu'
+      })
+  }
+
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) return res.sendStatus(401);
   
     jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-      if (err) return res.sendStatus(403);
-      const dbUser = await prisma.token.findFirst({
+      if (err) {
+        return res.status(401).json({ success: false, message: err });
+      }     
+
+     const isToken = await prisma.token.findFirst({
         where: { token }
       });
-      if (!dbUser) return res.sendStatus(401);
+      if (!isToken) return res.status(401).json({ success: false, message: "Tidak ada token atau sudah logout sebelumnya" });
+
       req.user = decoded;
       next();
     });
-    
+   }catch(error){
+    res.status(404).json({
+      success: false,
+      message: 'Session Token Has Expired'
+    })
+   }
+
   };
   
   module.exports = authenticateToken;
