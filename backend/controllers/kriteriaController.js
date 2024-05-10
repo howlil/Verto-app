@@ -3,13 +3,13 @@ const prisma = require('../config/prisma');
 exports.createKriteria = async (req, res) => {
     const { nama, bobot } = req.body;
     if (!nama || typeof nama !== 'string') {
-        return res.status(400).json({ message: 'Invalid or missing name. Name must be a non-empty string.' });
+        return res.status(400).json({success:false, message: 'Invalid or missing name. Name must be a non-empty string.' });
     }
     if (bobot === undefined || typeof bobot !== 'number') {
-        return res.status(400).json({ message: 'Invalid or missing weight. Weight must be a number.' });
+        return res.status(400).json({success:false, message: 'Invalid or missing weight. Weight must be a number.' });
     }
     if (isNaN(bobot)) {
-        return res.status(400).json({ message: 'Weight must be a valid number and not NaN.' });
+        return res.status(400).json({success:false, message: 'Weight must be a valid number and not NaN.' });
     }
     try {
         const isKriteria = await prisma.kriteria.findFirst({
@@ -18,16 +18,16 @@ exports.createKriteria = async (req, res) => {
             }
         })
         if(isKriteria){
-          return  res.status(400).json({message:"kriteria sudah ada"});
+          return  res.status(400).json({success:false,message:"kriteria sudah ada"});
         }
         else{
             const kriteria = await prisma.kriteria.create({
                 data: { nama, bobot }
             });
-            res.status(201).json(kriteria);
+           return res.status(201).json({success:true,message:"berhasil",data:{kriteria}});
         }
     } catch (error) {
-        res.status(500).json({ message: 'Server error: ' + error.message });
+       return res.status(500).json({ success:false,message: 'Server error: ' + error.message });
     }
 };
 
@@ -35,9 +35,9 @@ exports.createKriteria = async (req, res) => {
 exports.getKriteria = async (req, res) => {
     try {
         const kriteria = await prisma.kriteria.findMany();
-        res.json(kriteria);
+        return res.status(200).json({success:true,message:"kriteria ada",data:{kriteria}});
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({success:false, message: error.message });
     }
 };
 
@@ -50,32 +50,31 @@ exports.getKriteriaById = async (req, res) => {
           }
         });
         if (kriteria) {
-            res.json(kriteria);
+            return res.status(200).json({success:true,message:"berhasiil" ,data:{kriteria}});
         } else {
-            res.status(404).json({ message: 'Kriteria not found' });
+            return res.status(404).json({success:false, message: 'Kriteria not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+       return  res.status(500).json({success:false, message: error.message });
     }
 };
-
 exports.updateKriteria = async (req, res) => {
     const { id } = req.params;
     const { nama, bobot } = req.body;
     if (nama && typeof nama !== 'string') {
-        return res.status(400).json({ message: 'Invalid name' });
+        return res.status(400).json({success:false, message: 'Invalid name' });
     }
     if (bobot && typeof bobot !== 'number') {
-        return res.status(400).json({ message: 'Invalid weight' });
+        return res.status(400).json({success:false, message: 'Invalid weight' });
     }
     try {
         const kriteria = await prisma.kriteria.update({
             where: { id },
             data: { nama, bobot }
         });
-        res.json(kriteria);
+       return res.status(200).json({success:true,message:"berhasil update" ,kriteria});
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({success:false, message: error.message });
     }
 };
 
@@ -85,8 +84,8 @@ exports.deleteKriteria = async (req, res) => {
         await prisma.kriteria.delete({
             where: { id }
         });
-        res.status(200).json({message:"berhasil menghapus kriteria"});
+      return  res.status(200).json({success:true, message:"berhasil menghapus kriteria"});
     } catch (error) {
-        res.status(500).json({ message: error.message });
+      return  res.status(500).json({ success:false,message: error.message });
     }
 };

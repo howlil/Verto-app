@@ -17,6 +17,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", server.user)
 app.use("/", server.kriteria)
+app.use("/", server.detailKriteria)
+app.use("/", server.alternatif);
 
 
 app.use((err, req, res, next) => {
@@ -51,6 +53,7 @@ app.use((err, req, res, next) => {
   res.render('error', { error: err });
 });
 app.use((err, req, res, next) => {
+  console.error(err); 
   res.status(err.status || 500);
   res.json({
     message: "An error occurred",
