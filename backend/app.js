@@ -4,16 +4,17 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var app = express();
-const server = require("./routes/index")
-
-
-
+var server = require("./routes/index")
+const multer = require("multer");
+var cors = require("cors"); 
+app.use(cors({
+  origin: "http://localhost:5173" 
+}));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
 
 app.use("/", server.user)
 app.use("/", server.kriteria)
@@ -37,7 +38,7 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   res.status(err.status || 500);
-  res.render("error");
+  res.send("error");
 });
 app.use(function (err, req, res, next) {
   console.error(err.stack); 
@@ -50,7 +51,7 @@ app.use(function (err, req, res, next) {
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  res.render('error', { error: err });
+  res.send('error', { error: err });
 });
 app.use((err, req, res, next) => {
   console.error(err); 

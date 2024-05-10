@@ -10,7 +10,7 @@ const Button = ({ children, variant, ...props }) => {
   }`;
 
   return (
-    <button className={buttonClasses} {...props}>
+    <button type="submit" className={buttonClasses} {...props}>
       {children}
     </button>
   );

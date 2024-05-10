@@ -1,8 +1,9 @@
 import Layout from "@/components/Layout"
+import Title from "@/components/ui/Title"
 export default function Dashboard() {
   return (
     <Layout>
-      <p>he</p>
+      <Title title="Dashboard"/>
     </Layout>
   )
 }
