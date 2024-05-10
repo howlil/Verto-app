@@ -5,8 +5,8 @@ export default function SidebarNav() {
     return (
       <>
         {nav.map((data, i) => (
-          <section  key={i}>
-            <ActiveRoute href={data.href} icon={data.icon} label={data.label} />
+          <section key={i}>
+            <ActiveRoute path={data.path} icon={data.icon} name={data.name} />
           </section>
         ))}
       </>

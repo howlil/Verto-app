@@ -1,8 +1,7 @@
 import Layout from "@/components/Layout"
-export default function Dashboard() {
+export default function NilaiKriteria() {
   return (
     <Layout>
-      <p>he</p>
     </Layout>
   )
 }

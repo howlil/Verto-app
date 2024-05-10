@@ -1,8 +1,7 @@
 import Layout from "@/components/Layout"
-export default function Dashboard() {
+export default function HasilAnalisis() {
   return (
     <Layout>
-      <p>he</p>
     </Layout>
   )
 }

@@ -1,23 +1,33 @@
 export const nav = [
-    {
-        name : "Home",
-        path : "/",
-        icon : "home"
-    },
-    {
-        name : "About",
-        path : "/about",
-        icon : "info"
-    },
-    {
-        name : "Contact",
-        path : "/contact",
-        icon : "contact"
-    },
+
     {
         name : "Dashboard",
         path : "/dashboard",
-        icon : "dashboard"
+        icon : "LayoutDashboard"
+        
+    },
+    {
+        name : "Kriteria",
+        path : "/kriteria",
+        icon : "Table"
+        
+    },
+    {
+        name : "Nilai Kriteria",
+        path : "/nilaiKriteria",
+        icon : "Tally5"
+        
+    },
+    {
+        name : " Alternatif",
+        path : "/alternatif",
+        icon : "UsersRound"
+        
+    },
+    {
+        name : " Hasil Analisis",
+        path : "/hasilAnalisis",
+        icon : "FileBarChart"
         
     },
 ]
