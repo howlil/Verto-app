@@ -30,7 +30,7 @@ model DetailKriteria {
   id                String  @id @default(cuid())
   id_kriteria       String
   deskripsi         String
-  nilai             Float
+  nilai             Int
   createdAt         DateTime    @default(now())
   Kriteria          Kriteria    @relation(fields: [id_kriteria], references: [id])
   Penilaians        Penilaian[]

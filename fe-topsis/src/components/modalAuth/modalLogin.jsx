@@ -4,18 +4,18 @@ import Input from "../ui/Input";
 import Button from "../ui/Button";
 import loginAdmin from './api/login';
 export function ModalLogin() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let result;
     try {
-      result = await loginAdmin(email, password);
+      result = await loginAdmin({email, password});
       console.log(result);
       if (result.success) {
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (error) {
       console.log(error);

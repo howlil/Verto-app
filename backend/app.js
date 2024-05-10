@@ -21,7 +21,12 @@ app.use("/", server.kriteria)
 app.use("/", server.detailKriteria)
 app.use("/", server.alternatif);
 
-
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({ success: false, message: 'Bad JSON' });
+  }
+  next();
+});
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     res.status(400).json({
@@ -36,10 +41,10 @@ app.use((err, req, res, next) => {
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
-
   res.status(err.status || 500);
-  res.send("error");
+  res.json( { error: err });
 });
+
 app.use(function (err, req, res, next) {
   console.error(err.stack); 
   res.status(err.status || 500).json({
@@ -51,7 +56,7 @@ app.use(function (err, req, res, next) {
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  res.send('error', { error: err });
+  res.json('error', { error: err });
 });
 app.use((err, req, res, next) => {
   console.error(err); 

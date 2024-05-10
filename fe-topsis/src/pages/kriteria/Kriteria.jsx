@@ -1,30 +1,53 @@
 import Layout from "@/components/Layout";
 import Title from "@/components/ui/Title";
 import Table from "@/components/ui/Table";
+import AddKriteria from "./addKriteria";
 import Button from "@/components/ui/Button";
+import { useState, useEffect } from "react";
+import getKriteria from "./api/getKriteria";
+
 export default function Kriteria() {
+  const [kriteria, setKriteria] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const fetchKriteria = async () => {
+      const data = await getKriteria(); 
+      setKriteria(data.data.kriteria);
+    };
+
+    fetchKriteria();
+  }, []);
+
+   const handleEdit = (id) => {
+    console.log("Edit", id);
+  };
+
+  const handleDelete = (id) => {
+    console.log("Delete", id);
+  };
+
   return (
     <Layout>
       <section className="flex justify-between">
         <Title title="Buat Kriteria" />
-        <Button>tambah Kriteria</Button>
+        <Button onClick={() => setShowModal(true)}>Tambah Kriteria</Button>
       </section>
+      {showModal && <AddKriteria onClose={() => setShowModal(false)} />} 
       <section className="mt-8">
-        <Table columns={columns} data={data} />
+        <Table 
+        columns={columns} 
+        data={kriteria}
+        onEdit={(id) => handleEdit(id)} 
+        onDelete={(id) => handleDelete(id)} 
+    
+        />
       </section>
     </Layout>
   );
 }
-const columns = [
-  { header: 'ID', accessor: 'id' },
-  { header: 'Name', accessor: 'name' },
-  { header: 'Age', accessor: 'age' },
-  { header: 'City', accessor: 'city' }
-];
 
-const data = [
-  { id: 1, name: 'John Doe', age: 30, city: 'New York' },
-  { id: 2, name: 'Jane Doe', age: 25, city: 'Los Angeles' },
-  { id: 3, name: 'William Smith', age: 28, city: 'Chicago' },
-  // Add more data as needed
+const columns = [
+  { header: 'Kriteria', accessor: 'nama' },
+  { header: 'Bobot', accessor: 'bobot' },
 ];

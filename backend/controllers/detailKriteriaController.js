@@ -10,8 +10,11 @@ exports.createDetailKriteria = async (req, res) => {
         if (!deskripsi || typeof deskripsi !== 'string') {
             return res.status(400).json({ success: false, message: 'Invalid or missing description' });
         }
-        if (typeof nilai !== 'number' || isNaN(nilai)) {
+        if (nilai === undefined || typeof nilai !== 'number') {
             return res.status(400).json({ success: false, message: 'Invalid or missing value' });
+        }
+        if (isNaN(nilai)) {
+            return res.status(400).json({success:false, message: 'Weight must be a valid number and not NaN.' });
         }
 
         const isDetail = await prisma.detailKriteria.findFirst({
