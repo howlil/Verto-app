@@ -2,7 +2,7 @@ const prisma = require('../config/prisma');
 
 
 exports.createAlternatif = async (req, res) => {
-    const { nama, deskripsi } = req.body;
+    const { nama } = req.body;
 
     if (!nama || typeof nama !== 'string') {
         return res.status(400).json({ success: false, message: 'Invalid or missing name' });
@@ -10,7 +10,7 @@ exports.createAlternatif = async (req, res) => {
 
     try {
         const newAlternatif = await prisma.alternatif.create({
-            data: { nama, deskripsi }
+            data: { nama }
         });
      return   res.status(201).json({ success: true, message: "Alternatif created successfully", data: {newAlternatif} });
     } catch (error) {
@@ -46,12 +46,12 @@ exports.getAlternatifById = async (req, res) => {
 
 exports.updateAlternatif = async (req, res) => {
     const { id } = req.params;
-    const { nama, deskripsi } = req.body;
+    const { nama } = req.body;
 
     try {
         const updatedAlternatif = await prisma.alternatif.update({
             where: { id },
-            data: { nama, deskripsi }
+            data: { nama }
         });
        return res.status(200).json({ success: true, message: "Alternatif updated successfully", data: {updatedAlternatif} });
     } catch (error) {

@@ -1,7 +1,7 @@
 const prisma = require('../config/prisma');
 
 exports.createKriteria = async (req, res) => {
-    const { nama, bobot } = req.body;
+    const { nama, bobot,tipe } = req.body;
     if (!nama || typeof nama !== 'string') {
         return res.status(400).json({success:false, message: 'Invalid or missing name. Name must be a non-empty string.' });
     }
@@ -11,6 +11,11 @@ exports.createKriteria = async (req, res) => {
     if (isNaN(bobot)) {
         return res.status(400).json({success:false, message: 'Weight must be a valid number and not NaN.' });
     }
+    
+    if (!tipe || (tipe !== 'COST' && tipe !== 'BENEFIT')) {
+        return res.status(400).json({ success: false, message: 'Invalid or missing type. Type must be either "COST" or "BENEFIT".' });
+    }
+
     try {
         const isKriteria = await prisma.kriteria.findFirst({
             where:{
@@ -22,7 +27,7 @@ exports.createKriteria = async (req, res) => {
         }
         else{
             const kriteria = await prisma.kriteria.create({
-                data: { nama, bobot }
+                data: { nama, bobot ,tipe}
             });
            return res.status(201).json({success:true,message:"berhasil",data:{kriteria}});
         }
@@ -67,15 +72,21 @@ exports.updateKriteria = async (req, res) => {
     if (bobot && typeof bobot !== 'number') {
         return res.status(400).json({success:false, message: 'Invalid weight' });
     }
+    if (tipe && tipe !== 'COST' && tipe !== 'BENEFIT') {
+        return res.status(400).json({ success: false, message: 'Invalid type. Type must be either "COST" or "BENEFIT".' });
+    }
     try {
         const kriteria = await prisma.kriteria.update({
             where: { id },
-            data: { nama, bobot }
+            data: { nama, bobot, tipe }
         });
-       return res.status(200).json({success:true,message:"berhasil update" ,kriteria});
+       return res.status(200).json({success:true,message:"berhasil update" ,data:{kriteria}});
     } catch (error) {
-        return res.status(500).json({success:false, message: error.message });
-    }
+        if (error.code === 'P2025') {
+            return res.status(404).json({ success: false, message: 'No such kriteria found.' });
+        }
+        return res.status(500).json({ success: false, message: error.message });
+       }
 };
 
 exports.deleteKriteria = async (req, res) => {

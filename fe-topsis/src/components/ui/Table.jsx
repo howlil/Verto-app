@@ -22,10 +22,10 @@ const Table = ({ columns, data,onEdit,onDelete }) => {
             ))}
             <td className="py-2 flex justify-end">
               <div onClick={() => onEdit(row)} className="cursor-pointer ts active:scale-110 hover:scale-110">
-                 <Edit className="mr-2" color="orange" />
+                 <Edit size={20} className="mr-2 mt-1" color="orange" />
               </div>
               <div onClick={() => onDelete(row)} className="cursor-pointer ts active:scale-110 hover:scale-110" >
-                 <Trash className="mr-2" color="red" />
+                 <Trash size={20} className="mr-2 mt-1" color="red" />
               </div>
             </td>
           </tr>
