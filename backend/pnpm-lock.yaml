@@ -32,6 +32,9 @@ dependencies:
   jsonwebtoken:
     specifier: ^9.0.2
     version: 9.0.2
+  linear-algebra:
+    specifier: ^3.1.4
+    version: 3.1.4
   morgan:
     specifier: ~1.9.1
     version: 1.9.1
@@ -671,6 +674,10 @@ packages:
     dependencies:
       jwa: 1.4.1
       safe-buffer: 5.1.2
+    dev: false
+
+  /linear-algebra@3.1.4:
+    resolution: {integrity: sha512-lOcbqa61aheuk+6rfQoFhhHwbXUKP4fRDt++oG8JrMeAW3udM515+ntJYuJPbe9tOCBT5gvaSS9rr0Iy7tMvKw==}
     dev: false
 
   /lodash.includes@4.3.0:

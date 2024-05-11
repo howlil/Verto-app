@@ -1,25 +1,19 @@
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { useState } from "react";
-import addKriteria from "./api/addKriteria";
-import Select from "@/components/ui/Select";
+import addAlternatif from "./apis/addAlternatif";
 
-const typeOptions = [
-  { value: "BENEFIT", label: "BENEFIT" },
-  { value: "COST", label: "COST" },
-];
 
-const AddKriteria = ({ onClose, refreshData }) => {
+
+const AddAlternatif = ({ onClose, refreshData }) => {
   const [nama, setNama] = useState("");
-  const [bobot, setBobot] = useState("");
   const [data, setData] = useState([]);
-  const [tipe, setType] = useState("");
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  let bobotFloat = parseFloat(bobot);
   try {
-    const result = await addKriteria({ nama, bobotFloat, tipe });
+    const result = await addAlternatif({ nama });
     setData(result);
     onClose();
     refreshData();
@@ -42,23 +36,11 @@ const handleSubmit = async (e) => {
       >
         <form onSubmit={handleSubmit} className="mb-4 flex flex-col gap-4">
           <Input
-            label="Nama Kriteria"
-            placeholder="Nama Kriteria"
+            label="Nama Alternatif"
+            placeholder="Nama Alternatif"
             type="text"
             value={nama}
             onChange={(e) => setNama(e.target.value)}
-          />
-          <Input
-            label="Jumlah Bobot"
-            placeholder="Masukan Bobot"
-            type="number"
-            value={bobot}
-            onChange={(e) => setBobot(e.target.value)}
-          />
-          <Select
-            label="Tipe"
-            options={typeOptions}
-            onChange={(e) => setType(e.target.value)}
           />
           <Button>Submit</Button>
         </form>
@@ -67,4 +49,4 @@ const handleSubmit = async (e) => {
   );
 };
 
-export default AddKriteria;
+export default AddAlternatif;

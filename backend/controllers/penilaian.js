@@ -35,6 +35,17 @@ exports.createPenilaian = async (req, res) => {
             return res.status(400).json({ message: "Invalid id_alternatif", data: {} });
         }
 
+        const existingPenilaian = await prisma.penilaian.findMany({
+            where: {
+                id_alternatif,
+                id_kriteria,
+            },
+        });
+
+        if (existingPenilaian.length > 0) {
+            return res.status(400).json({ message: "Alternatif can only have one detailKriteria in one kriteria", data: {} });
+        }
+
         const penilaian = await prisma.penilaian.create({
             data: {
                 id_detail_kriteria,
@@ -65,7 +76,9 @@ exports.getAllPenilaian = async (req, res) => {
                 },
                 Kriteria: {
                     select: {
-                        nama: true
+                        nama: true,
+                        tipe: true,
+                        bobot: true
                     }
                 }
             }
@@ -95,7 +108,9 @@ exports.getPenilaianById = async (req, res) => {
                 },
                 Kriteria: {
                     select: {
-                        nama: true
+                        nama: true,
+                        tipe: true,
+                        bobot: true
                     }
                 }
             }

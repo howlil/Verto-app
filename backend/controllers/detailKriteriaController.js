@@ -41,7 +41,15 @@ exports.createDetailKriteria = async (req, res) => {
 
 exports.getAllDetailKriteria = async (req, res) => {
     try {
-        const details = await prisma.detailKriteria.findMany();
+        const details = await prisma.detailKriteria.findMany({
+            include:{
+                Kriteria: {
+                    select: {
+                        nama: true,
+                    }
+                }
+            }
+        });
         return   res.status(200).json({ success: true, message: "All DetailKriteria retrieved successfully", data: {details} });
     } catch (error) {
         return  res.status(500).json({ success: false, message: 'Failed to get DetailKriteria', error: error.message });

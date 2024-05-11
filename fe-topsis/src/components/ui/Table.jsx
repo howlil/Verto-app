@@ -1,7 +1,10 @@
 import { Trash, Edit } from "lucide-react";
 
-const Table = ({ columns, data,onEdit,onDelete }) => {
-  let i =1;
+const getNestedProperty = (obj, path) => {
+  return path.split('.').reduce((obj, key) => (obj && obj[key] !== 'undefined') ? obj[key] : undefined, obj);
+}
+
+const Table = ({ columns, data, onEdit, onDelete }) => {
   return (
     <table className="w-full">
       <thead className="bg-orange-50">
@@ -18,7 +21,7 @@ const Table = ({ columns, data,onEdit,onDelete }) => {
           <tr className="border-b border-neutral-100" key={rowIndex}>
             <td className="text-center">{rowIndex + 1}</td> 
             {columns.map((column, colIndex) => (
-              <td className="py-2 text-start pl-4" key={colIndex}>{row[column.accessor]}</td>
+              <td className="py-2 text-start pl-4" key={colIndex}>{getNestedProperty(row, column.accessor)}</td>
             ))}
             <td className="py-2 flex justify-end">
               <div onClick={() => onEdit(row)} className="cursor-pointer ts active:scale-110 hover:scale-110">

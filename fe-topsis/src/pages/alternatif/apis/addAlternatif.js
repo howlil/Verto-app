@@ -1,12 +1,10 @@
-export default async function addKriteria({ nama, bobotFloat,tipe }) {
+export default async function addAlternatif({ nama}) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");  
     myHeaders.append("Authorization", "Bearer " + localStorage.getItem("authToken"));
 
   const raw = JSON.stringify({
   "nama": nama,
-  "bobot": bobotFloat,
-  "tipe":tipe
 });
 
   
@@ -18,7 +16,7 @@ export default async function addKriteria({ nama, bobotFloat,tipe }) {
     };
   
     try {
-      const apiURL = `${import.meta.env.VITE_API_BASE_URL}/addKriteria`;
+      const apiURL = `${import.meta.env.VITE_API_BASE_URL}/addAlternatif`;
       const response = await fetch(apiURL, requestOptions);
       
       if (!response.ok) {

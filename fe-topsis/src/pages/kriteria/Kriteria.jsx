@@ -10,12 +10,13 @@ export default function Kriteria() {
   const [kriteria, setKriteria] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
     const fetchKriteria = async () => {
       const data = await getKriteria(); 
       setKriteria(data.data.kriteria);
     };
 
+
+  useEffect(() => {
     fetchKriteria();
   }, []);
 
@@ -33,8 +34,7 @@ export default function Kriteria() {
         <Title title="Buat Kriteria" />
         <Button onClick={() => setShowModal(true)}>Tambah Kriteria</Button>
       </section>
-      {showModal && <AddKriteria onClose={() => setShowModal(false)} />} 
-      <section className="mt-8">
+      {showModal && <AddKriteria onClose={() => setShowModal(false)} refreshData={fetchKriteria} />}       <section className="mt-8">
         <Table 
         columns={columns} 
         data={kriteria}
@@ -50,4 +50,5 @@ export default function Kriteria() {
 const columns = [
   { header: 'Kriteria', accessor: 'nama' },
   { header: 'Bobot', accessor: 'bobot' },
+  { header: 'Tipe', accessor: 'tipe' },
 ];

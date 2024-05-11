@@ -2,29 +2,53 @@ import Layout from "@/components/Layout";
 import Title from "@/components/ui/Title";
 import Table from "@/components/ui/Table";
 import Button from "@/components/ui/Button";
+import AddAlternatif from "./addAlternatif";
+import { useState, useEffect } from "react";
+import getAlternatif from "./apis/getAlternatif";
+
 export default function Alternatif() {
+  const [showModal, setShowModal] = useState(false);
+  const [data, setData] = useState([]);
+
+  const fetchData = async () => {
+    const data = await getAlternatif();
+    setData(data.data.alternatifs);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleEdit = (id) => {
+    console.log("Edit", id);
+  };
+
+  const handleDelete = (id) => {
+    console.log("Delete", id);
+  };
+
   return (
     <Layout>
       <section className="flex justify-between">
         <Title title="Buat Alternatif" />
-        <Button>tambah Alternatif</Button>
+        <Button onClick={() => setShowModal(true)}>tambah Alternatif</Button>
       </section>
       <section className="mt-8">
-        <Table columns={columns} data={data} />
+        <Table
+          columns={columns}
+          data={data}
+          onEdit={(id) => handleEdit(id)}
+          onDelete={(id) => handleDelete(id)}
+        />
       </section>
+      {showModal && (
+        <AddAlternatif
+          onClose={() => setShowModal(false)}
+          refreshData={fetchData}
+        />
+      )}
     </Layout>
-  )
+  );
 }
-const columns = [
-  { header: 'ID', accessor: 'id' },
-  { header: 'Name', accessor: 'name' },
-  { header: 'Age', accessor: 'age' },
-  { header: 'City', accessor: 'city' }
-];
 
-const data = [
-  { id: 1, name: 'John Doe', age: 30, city: 'New York' },
-  { id: 2, name: 'Jane Doe', age: 25, city: 'Los Angeles' },
-  { id: 3, name: 'William Smith', age: 28, city: 'Chicago' },
-  // Add more data as needed
-];
+const columns = [{ header: "Nama", accessor: "nama" }];

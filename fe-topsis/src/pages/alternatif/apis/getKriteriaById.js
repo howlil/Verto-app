@@ -1,29 +1,22 @@
-export default async function addKriteria({ nama, bobotFloat,tipe }) {
+export default async function getKriteriaById({id}) {
     const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");  
     myHeaders.append("Authorization", "Bearer " + localStorage.getItem("authToken"));
 
-  const raw = JSON.stringify({
-  "nama": nama,
-  "bobot": bobotFloat,
-  "tipe":tipe
-});
 
   
     const requestOptions = {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
-      body: raw,
       redirect: "follow"
     };
   
     try {
-      const apiURL = `${import.meta.env.VITE_API_BASE_URL}/addKriteria`;
+      const apiURL = `${import.meta.env.VITE_API_BASE_URL}/getKriteriaId/${id}`;
       const response = await fetch(apiURL, requestOptions);
       
       if (!response.ok) {
         const errorBody = await response.json();
-        throw new Error(errorBody.message || 'Add Kriteria failed');
+        throw new Error(errorBody.message || 'Get Kriteria by ID failed');
       }
   
       const data = await response.json();

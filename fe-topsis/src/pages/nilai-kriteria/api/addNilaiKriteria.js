@@ -1,13 +1,14 @@
-export default async function addKriteria({ nama, bobotFloat,tipe }) {
+export default async function addNilaiKriteria({ selectKriteria, deskripsi,nilaiInt }) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");  
     myHeaders.append("Authorization", "Bearer " + localStorage.getItem("authToken"));
 
-  const raw = JSON.stringify({
-  "nama": nama,
-  "bobot": bobotFloat,
-  "tipe":tipe
-});
+    const raw = JSON.stringify({
+        "id_kriteria": selectKriteria,
+        "deskripsi": deskripsi,
+        "nilai": nilaiInt
+      });
+      
 
   
     const requestOptions = {
@@ -18,7 +19,7 @@ export default async function addKriteria({ nama, bobotFloat,tipe }) {
     };
   
     try {
-      const apiURL = `${import.meta.env.VITE_API_BASE_URL}/addKriteria`;
+      const apiURL = `${import.meta.env.VITE_API_BASE_URL}/addDetailKriteria`;
       const response = await fetch(apiURL, requestOptions);
       
       if (!response.ok) {

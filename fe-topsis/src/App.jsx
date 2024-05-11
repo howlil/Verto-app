@@ -7,6 +7,7 @@ import NilaiKriteria from "./pages/nilai-kriteria/NilaiKriteria";
 import Alternatif from "./pages/alternatif/Alternatif";
 import { ProtectRoute } from "./utils/ProtectRoute";
 import HasilAnalisis from "./pages/hasil-analisis/HasilAnalisis";
+import Penilaian from "./pages/penilaian/Penilaian";
 export default function App() {
   return (
     <>
@@ -19,6 +20,14 @@ export default function App() {
               element={
                 <ProtectRoute>
                   <Dashboard />
+                </ProtectRoute>
+              }
+            />
+            <Route
+              path="/penilaian"
+              element={
+                <ProtectRoute>
+                  <Penilaian />
                 </ProtectRoute>
               }
             />
