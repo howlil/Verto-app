@@ -62,7 +62,7 @@ export default function Penilaian() {
         <table className="table-auto w-full">
           <thead className="bg-orange-50">
             <tr>
-              <th className="px-4 py-2">Alternatif / Kriteria</th>
+              <th className="text-start px-4 py-2">Alternatif / Kriteria</th>
               {kriterias.map((krit) => (
                 <th key={krit} className="px-4 py-2">
                   {krit}
@@ -73,7 +73,7 @@ export default function Penilaian() {
           <tbody>
             {matrix.map((row, i) => (
               <tr key={i}>
-                <td className="border-b text-center px-4 py-2">
+                <td className="border-b text-start text-center px-4 py-2">
                   {row.Alternatif}
                 </td>
                 {kriterias.map((krit) => (

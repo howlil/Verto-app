@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import Select from "@/components/ui/Select";
 import getAlternatif from "../alternatif/apis/getAlternatif";
-import addPenilaianApi from "./apis/addPenilaian";
+import addPenilaian from "./apis/addPenilaian";
 import getKriteria from "../kriteria/api/getKriteria";
 import getNilaiKriteria from "../nilai-kriteria/api/getNilaiKriteria";
 
@@ -45,20 +45,26 @@ export default function AddPenilaian({ onClose, refreshData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await addPenilaianApi({
+      console.log("Submitting: ", selectedAlternatif, penilaian);
+
+      const result = await addPenilaian({
         id_alternatif: selectedAlternatif,
         penilaian,
       });
-      if (result && result.success) {
+      
+      if (result) {
+        console.log("Success:", result);
         refreshData();
         onClose();
       } else {
-        throw new Error("Failed to add evaluation");
+        console.error("Failed to add evaluation:", result.message);
+        throw new Error(result.message || "Failed to add evaluation");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
+
 
   return (
     <div

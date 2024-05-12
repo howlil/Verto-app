@@ -1,5 +1,4 @@
-
-
+const prisma = require('../config/prisma');
 exports.analisisTopsis = async (req,res)=>{
   try {
 
