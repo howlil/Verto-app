@@ -1,4 +1,4 @@
-export default async function addNilaiKriteria({ selectKriteria, deskripsi,nilaiInt }) {
+export default async function addDetailKriteria({ selectKriteria, deskripsi,nilaiInt }) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");  
     myHeaders.append("Authorization", "Bearer " + localStorage.getItem("authToken"));
@@ -9,7 +9,6 @@ export default async function addNilaiKriteria({ selectKriteria, deskripsi,nilai
         "nilai": nilaiInt
       });
       
-
   
     const requestOptions = {
       method: "POST",

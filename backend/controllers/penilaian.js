@@ -1,29 +1,69 @@
 const prisma = require('../config/prisma');
 
+// exports.createPenilaian = async (req, res) => {
+//     try {
+//         const { id_detail_kriteria, id_kriteria, id_alternatif } = req.body;
+        
+//         if (!id_detail_kriteria || !id_kriteria || !id_alternatif) {
+//             return res.status(400).json({ message: "All fields are required", data: {} });
+//         }
+
+//         // Check if id_detail_kriteria exists in the detail_kriteria table
+//         const detailKriteria = await prisma.detailKriteria.findUnique({
+//             where: { id: id_detail_kriteria },
+//         });
+
+//         if (!detailKriteria) {
+//             return res.status(400).json({ message: "Invalid id_detail_kriteria", data: {} });
+//         }
+
+//         // Check if id_kriteria exists in the kriteria table
+//         const kriteria = await prisma.kriteria.findUnique({
+//             where: { id: id_kriteria },
+//         });
+
+//         if (!kriteria) {
+//             return res.status(400).json({ message: "Invalid id_kriteria", data: {} });
+//         }
+
+//         // Check if id_alternatif exists in the alternatif table
+//         const alternatif = await prisma.alternatif.findUnique({
+//             where: { id: id_alternatif },
+//         });
+
+//         if (!alternatif) {
+//             return res.status(400).json({ message: "Invalid id_alternatif", data: {} });
+//         }
+
+//         const existingPenilaian = await prisma.penilaian.findMany({
+//             where: {
+//                 id_alternatif,
+//                 id_kriteria,
+//             },
+//         });
+
+//         if (existingPenilaian.length > 0) {
+//             return res.status(400).json({ message: "Alternatif can only have one detailKriteria in one kriteria", data: {} });
+//         }
+
+//         const penilaian = await prisma.penilaian.create({
+//             data: {
+//                 id_detail_kriteria,
+//                 id_kriteria,
+//                 id_alternatif,
+//             },
+//         });
+//         res.status(200).json({ message: "Penilaian created successfully", data: penilaian });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message, data: {} });
+//     }
+// };
 exports.createPenilaian = async (req, res) => {
     try {
-        const { id_detail_kriteria, id_kriteria, id_alternatif } = req.body;
+        const { id_alternatif, penilaian } = req.body;
         
-        if (!id_detail_kriteria || !id_kriteria || !id_alternatif) {
+        if (!id_alternatif || !penilaian || penilaian.length === 0) {
             return res.status(400).json({ message: "All fields are required", data: {} });
-        }
-
-        // Check if id_detail_kriteria exists in the detail_kriteria table
-        const detailKriteria = await prisma.detailKriteria.findUnique({
-            where: { id: id_detail_kriteria },
-        });
-
-        if (!detailKriteria) {
-            return res.status(400).json({ message: "Invalid id_detail_kriteria", data: {} });
-        }
-
-        // Check if id_kriteria exists in the kriteria table
-        const kriteria = await prisma.kriteria.findUnique({
-            where: { id: id_kriteria },
-        });
-
-        if (!kriteria) {
-            return res.status(400).json({ message: "Invalid id_kriteria", data: {} });
         }
 
         // Check if id_alternatif exists in the alternatif table
@@ -35,30 +75,52 @@ exports.createPenilaian = async (req, res) => {
             return res.status(400).json({ message: "Invalid id_alternatif", data: {} });
         }
 
-        const existingPenilaian = await prisma.penilaian.findMany({
-            where: {
-                id_alternatif,
-                id_kriteria,
-            },
-        });
+        for (let i = 0; i < penilaian.length; i++) {
+            const { id_kriteria, id_detail_kriteria } = penilaian[i];
 
-        if (existingPenilaian.length > 0) {
-            return res.status(400).json({ message: "Alternatif can only have one detailKriteria in one kriteria", data: {} });
+            // Check if id_kriteria exists in the kriteria table
+            const kriteria = await prisma.kriteria.findUnique({
+                where: { id: id_kriteria },
+            });
+
+            if (!kriteria) {
+                return res.status(400).json({ message: `Invalid id_kriteria for index ${i}`, data: {} });
+            }
+
+            // Check if id_detail_kriteria exists in the detail_kriteria table
+            const detailKriteria = await prisma.detailKriteria.findUnique({
+                where: { id: id_detail_kriteria },
+            });
+
+            if (!detailKriteria) {
+                return res.status(400).json({ message: `Invalid id_detail_kriteria for index ${i}`, data: {} });
+            }
+
+            const existingPenilaian = await prisma.penilaian.findMany({
+                where: {
+                    id_alternatif,
+                    id_kriteria,
+                },
+            });
+
+            if (existingPenilaian.length > 0) {
+                return res.status(400).json({ message: `Alternatif can only have one detailKriteria in one kriteria for index ${i}`, data: {} });
+            }
+
+            await prisma.penilaian.create({
+                data: {
+                    id_detail_kriteria,
+                    id_kriteria,
+                    id_alternatif,
+                },
+            });
         }
 
-        const penilaian = await prisma.penilaian.create({
-            data: {
-                id_detail_kriteria,
-                id_kriteria,
-                id_alternatif,
-            },
-        });
-        res.status(200).json({ message: "Penilaian created successfully", data: penilaian });
+        res.status(200).json({ message: "Penilaian created successfully", data: {} });
     } catch (error) {
         res.status(500).json({ message: error.message, data: {} });
     }
 };
-
 exports.getAllPenilaian = async (req, res) => {
     try {
         const penilaians = await prisma.penilaian.findMany({

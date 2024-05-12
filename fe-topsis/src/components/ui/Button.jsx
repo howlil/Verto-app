@@ -1,7 +1,7 @@
 const Button = ({ children, variant, ...props }) => {
   const variantClasses = {
     primary: "bg-orange-500 text-neutral-100 font-semibold active:scale-105 ts",
-    secondary: "bg-gray-500 text-white hover:bg-gray-700",
+    secondary: "bg-green-500 text-white hover:bg-gray-700",
     danger: "bg-red-500 text-white hover:bg-red-700",
   };
 

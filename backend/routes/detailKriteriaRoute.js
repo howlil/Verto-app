@@ -13,5 +13,5 @@ router.post('/addDetailKriteria', detailKriteriaController.createDetailKriteria)
 router.get('/getDetailKriteria', detailKriteriaController.getAllDetailKriteria);
 router.get('/getDetailKriteria/:id', detailKriteriaController.getDetailKriteriaById);
 router.put('/editDetailKriteria/:id', detailKriteriaController.updateDetailKriteria);
-router.delete('deleteDetailKriteria/:id', detailKriteriaController.deleteDetailKriteria);
+router.delete('/deleteDetailKriteria/:id', detailKriteriaController.deleteDetailKriteria);
 module.exports = router;

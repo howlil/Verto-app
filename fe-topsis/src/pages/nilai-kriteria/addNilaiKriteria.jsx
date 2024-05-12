@@ -1,12 +1,12 @@
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { useState, useEffect } from "react";
-import addNilaiKriteria from "./api/addNilaiKriteria";
+import addDetailKriteria from "./api/addDetailKriteria";
 import Select from "@/components/ui/Select";
 import getKriteria from "../kriteria/api/getKriteria";
 
 const AddNilaiKriteria = ({ onClose, refreshData }) => {
-    const [kriteria, setKriteria] = useState([]);
+  const [kriteria, setKriteria] = useState([]);
   const [selectKriteria, setSelectKriteria] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [nilai, setNilai] = useState("");
@@ -15,7 +15,7 @@ const AddNilaiKriteria = ({ onClose, refreshData }) => {
     e.preventDefault();
     let nilaiInt = parseFloat(nilai);
     try {
-      await addNilaiKriteria({ selectKriteria, deskripsi, nilaiInt });
+      await addDetailKriteria({ selectKriteria, deskripsi, nilaiInt });
       refreshData();
       onClose();
     } catch (error) {

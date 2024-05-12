@@ -92,11 +92,15 @@ exports.updateKriteria = async (req, res) => {
 exports.deleteKriteria = async (req, res) => {
     const { id } = req.params;
     try {
-        await prisma.kriteria.delete({
-            where: { id }
-        });
-      return  res.status(200).json({success:true, message:"berhasil menghapus kriteria"});
+      const kriteria = await prisma.kriteria.findUnique({ where: { id } });
+      if (!kriteria) {
+        res.status(404).json({ error: "Kriteria not found" });
+        return;
+      }
+      await prisma.kriteria.delete({ where: { id } });
+      res.status(200).json({ message: "Kriteria deleted successfully" });
     } catch (error) {
-      return  res.status(500).json({ success:false,message: error.message });
+      console.error("Delete error:", error);
+      res.status(500).json({ error: "An error occurred while deleting the kriteria" });
     }
-};
+  };
