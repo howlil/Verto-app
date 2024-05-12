@@ -5,8 +5,12 @@ import Button from "@/components/ui/Button";
 import AddAlternatif from "./addAlternatif";
 import { useState, useEffect } from "react";
 import getAlternatif from "./apis/getAlternatif";
+import ModalDelete from "@/components/ui/ModalDelete";
+import deleteAlternatif from "./apis/deleteAlternatif";
 
 export default function Alternatif() {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState([]);
 
@@ -23,8 +27,14 @@ export default function Alternatif() {
     console.log("Edit", id);
   };
 
-  const handleDelete = (id) => {
-    console.log("Delete", id);
+  const handleDelete = async () => {
+    try {
+      await deleteAlternatif({ id: deleteId });
+      fetchData();
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
   };
 
   return (
@@ -38,13 +48,22 @@ export default function Alternatif() {
           columns={columns}
           data={data}
           onEdit={(id) => handleEdit(id)}
-          onDelete={(id) => handleDelete(id)}
+          onDelete={(row) => {
+            setDeleteId(row.id);
+            setShowDeleteModal(true);
+          }}
         />
       </section>
       {showModal && (
         <AddAlternatif
           onClose={() => setShowModal(false)}
           refreshData={fetchData}
+        />
+      )}
+      {showDeleteModal && (
+        <ModalDelete
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={handleDelete}
         />
       )}
     </Layout>

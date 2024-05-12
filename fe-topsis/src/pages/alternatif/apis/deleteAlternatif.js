@@ -1,4 +1,4 @@
-export default async function hapusKriteria({id}) {
+export default async function deleteAlternatif({id}) {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer " + localStorage.getItem("authToken"));
 
@@ -11,13 +11,9 @@ export default async function hapusKriteria({id}) {
     };
   
     try {
-      const apiURL = `${import.meta.env.VITE_API_BASE_URL}/deleteKriteria/${id}`;
+      const apiURL = `${import.meta.env.VITE_API_BASE_URL}/deleteAlternatif/${id}`;
       const response = await fetch(apiURL, requestOptions);
-      
-      if (!response.ok) {
-        const errorBody = await response.json();
-        throw new Error(errorBody.message || 'delete Kriteria by ID failed');
-      }
+
   
       const data = await response.json();
   

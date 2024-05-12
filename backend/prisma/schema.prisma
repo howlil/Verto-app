@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,21 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Token {
   id                String  @id @default(cuid())
-  token      String    @unique
-  createdAt  DateTime  @default(now())
-  expiresAt  DateTime
-  userId     String
-  User       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token             String  @unique
+  createdAt         DateTime  @default(now())
+  expiresAt         DateTime
+  userId            String
+  User              User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Alternatif {
   id                String  @id @default(cuid())
-  nama        String
-  createdAt   DateTime     @default(now())
-  Penilaians  Penilaian[]
+  nama              String
+  createdAt         DateTime     @default(now())
+  Penilaians        Penilaian[]
 }
 
 model DetailKriteria {
@@ -31,27 +29,27 @@ model DetailKriteria {
   deskripsi         String
   nilai             Int
   createdAt         DateTime    @default(now())
-  Kriteria          Kriteria    @relation(fields: [id_kriteria], references: [id])
+  Kriteria          Kriteria    @relation(fields: [id_kriteria], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Penilaians        Penilaian[]
 }
 
 model Hasil {
   id                String  @id @default(cuid())
-  id_penilaian   String
-  ranking        Int
-  nilai          Float
-  userId         String
-  Penilaian      Penilaian @relation(fields: [id_penilaian], references: [id])
-  User           User      @relation(fields: [userId], references: [id])
+  id_penilaian      String
+  ranking           Int
+  nilai             Float
+  userId            String
+  Penilaian         Penilaian @relation(fields: [id_penilaian], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  User              User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Kriteria {
-  id              String          @id @default(cuid())
-  nama            String
-  bobot           Float
-  tipe            Tipe
-  DetailKriterias DetailKriteria[]
-  Penilaian       Penilaian[]
+  id                String          @id @default(cuid())
+  nama              String
+  bobot             Float
+  tipe              Tipe
+  DetailKriterias   DetailKriteria[]
+  Penilaian         Penilaian[]
 }
 
 enum Tipe {
@@ -65,9 +63,9 @@ model Penilaian {
   id_kriteria         String
   id_alternatif       String
   Hasils              Hasil[]
-  Alternatif          Alternatif      @relation(fields: [id_alternatif], references: [id])
-  DetailKriteria      DetailKriteria  @relation(fields: [id_detail_kriteria], references: [id])
-  Kriteria            Kriteria        @relation(fields: [id_kriteria], references: [id])
+  Alternatif          Alternatif      @relation(fields: [id_alternatif], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  DetailKriteria      DetailKriteria  @relation(fields: [id_detail_kriteria], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Kriteria            Kriteria        @relation(fields: [id_kriteria], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model User {

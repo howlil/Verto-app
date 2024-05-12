@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import Title from "@/components/ui/Title";
 import Button from "@/components/ui/Button";
-import React, { useState, useEffect, useMemo } from "react";
-// import AddPenilaian from "./addPenilaian";
+import AddPenilaian from "./addPenilaian";
 import getPenilaian from "./apis/getPenilaian";
 import getAlternatif from "../alternatif/apis/getAlternatif";
 import getKriteria from "../kriteria/api/getKriteria";
@@ -13,6 +13,13 @@ export default function Penilaian() {
   const [alternatifs, setAlternatifs] = useState([]);
   const [kriterias, setKriterias] = useState([]);
   const [penilaian, setPenilaian] = useState([]);
+
+  const fetchPenilaian = async () => {
+    const response = await getPenilaian();
+    if (response.message === "All penilaians fetched successfully") {
+      setPenilaian(response.data);
+    }
+  };
 
   useEffect(() => {
     const fetchAlternatif = async () => {
@@ -26,13 +33,6 @@ export default function Penilaian() {
       const response = await getKriteria();
       if (response.success) {
         setKriterias(response.data.kriteria.map((item) => item.nama));
-      }
-    };
-
-    const fetchPenilaian = async () => {
-      const response = await getPenilaian();
-      if (response.message === "All penilaians fetched successfully") {
-        setPenilaian(response.data);
       }
     };
 
@@ -52,19 +52,11 @@ export default function Penilaian() {
     return row;
   });
 
-  const handleEdit = (id) => {
-    console.log("Edit", id);
-  };
-
-  const handleDelete = (id) => {
-    console.log("Delete", id);
-  };
-
   return (
     <Layout>
       <section className="flex justify-between">
         <Title title="Buat Penilaian" />
-        <Button onClick={() => setShowModal(true)}>tambah Penilaian</Button>
+        <Button onClick={() => setShowModal(true)}>Tambah Penilaian</Button>
       </section>
       <section className="mt-8">
         <table className="table-auto w-full">
@@ -80,7 +72,7 @@ export default function Penilaian() {
           </thead>
           <tbody>
             {matrix.map((row, i) => (
-              <tr key={i} className="">
+              <tr key={i}>
                 <td className="border-b text-center px-4 py-2">
                   {row.Alternatif}
                 </td>
@@ -94,6 +86,12 @@ export default function Penilaian() {
           </tbody>
         </table>
       </section>
+      {showModal && (
+        <AddPenilaian
+          onClose={() => setShowModal(false)}
+          refreshData={fetchPenilaian}
+        />
+      )}
     </Layout>
   );
 }
