@@ -33,15 +33,7 @@ model DetailKriteria {
   Penilaians        Penilaian[]
 }
 
-model Hasil {
-  id                String  @id @default(cuid())
-  id_penilaian      String
-  ranking           Int
-  nilai             Float
-  userId            String
-  Penilaian         Penilaian @relation(fields: [id_penilaian], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  User              User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
+
 
 model Kriteria {
   id                String          @id @default(cuid())
@@ -57,12 +49,13 @@ enum Tipe {
   BENEFIT
 }
 
+
+
 model Penilaian {
   id                String  @id @default(cuid())
   id_detail_kriteria  String
   id_kriteria         String
   id_alternatif       String
-  Hasils              Hasil[]
   Alternatif          Alternatif      @relation(fields: [id_alternatif], references: [id], onDelete: Cascade, onUpdate: Cascade)
   DetailKriteria      DetailKriteria  @relation(fields: [id_detail_kriteria], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Kriteria            Kriteria        @relation(fields: [id_kriteria], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -76,5 +69,22 @@ model User {
   image     String?
   createdAt DateTime  @default(now())
   Token     Token[]
-  Hasils    Hasil[]
+}
+model Result {
+  id        String  @id @default(cuid())
+  normalizedMatrix         Json
+  weightedNormalizedMatrix Json
+  idealSolution            Json
+  negativeIdealSolution    Json
+  distancesToIdeal         Json
+  distancesToNegativeIdeal Json
+  PerformanceScores        PerformanceScore[]
+}
+
+model PerformanceScore {
+  id          String  @id @default(cuid())
+  score       Float
+  alternative Json
+  resultId    String
+  result      Result   @relation(fields: [resultId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
 }

@@ -1,9 +1,5 @@
 export const nav = [
-  {
-    name: "Dashboard",
-    path: "/dashboard",
-    icon: "LayoutDashboard",
-  },
+
   {
     name: "Kriteria",
     path: "/kriteria",

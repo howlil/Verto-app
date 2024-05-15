@@ -73,7 +73,7 @@ export default function Penilaian() {
           <tbody>
             {matrix.map((row, i) => (
               <tr key={i}>
-                <td className="border-b text-start text-center px-4 py-2">
+                <td className="border-b text-start px-4 py-2">
                   {row.Alternatif}
                 </td>
                 {kriterias.map((krit) => (

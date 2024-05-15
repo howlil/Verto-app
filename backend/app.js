@@ -21,6 +21,7 @@ app.use("/", server.kriteria)
 app.use("/", server.detailKriteria)
 app.use("/", server.alternatif);
 app.use("/", server.penilaian);
+app.use("/", server.analisis);
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {

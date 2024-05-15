@@ -1,10 +1,12 @@
-export default async function addAnalisis({ nama}) {
+export default async function addAnalisis({ arrayData,bobot,tipe}) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");  
     myHeaders.append("Authorization", "Bearer " + localStorage.getItem("authToken"));
 
   const raw = JSON.stringify({
-  "nama": nama,
+  "data": arrayData,
+  "weights":bobot,
+  "criteriaTypes":tipe
 });
 
   

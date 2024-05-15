@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/landing-page/Home";
 import { ActiveRouteProvider } from "./utils/ActiveRouteContex";
-import Dashboard from "./pages/dashboard/Dashboard";
 import Kriteria from "./pages/kriteria/Kriteria";
 import NilaiKriteria from "./pages/nilai-kriteria/NilaiKriteria";
 import Alternatif from "./pages/alternatif/Alternatif";
@@ -15,14 +14,7 @@ export default function App() {
         <ActiveRouteProvider>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectRoute>
-                  <Dashboard />
-                </ProtectRoute>
-              }
-            />
+
             <Route
               path="/penilaian"
               element={
